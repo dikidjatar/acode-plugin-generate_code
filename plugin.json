@@ -1,0 +1,17 @@
+{
+  "id": "acode.plugin.generate_code",
+  "name": "Generate Code",
+  "main": "dist/main.js",
+  "version": "1.0.0",
+  "readme": "readme.md",
+  "icon": "icon.png",
+  "files": [
+    "assets/markdown-it.min.js"
+  ],
+  "price": 0,
+  "author": {
+    "name": "Diki Djatar",
+    "email": "dikidjatar@gmail.com",
+    "github": "dikidjatar"
+  }
+}
