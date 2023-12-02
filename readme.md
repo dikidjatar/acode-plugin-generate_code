@@ -15,6 +15,14 @@ Type `Hide Generate Code Button` to hide the right button.
 
 To update your token, search for `"Generate Code Update Token"`.
 
+# Video
+<iframe width="315" height="560"
+src="https://youtube.com/embed/wd-tziDcsYQ"
+title="YouTube video player" frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+gyroscope; picture-in-picture;
+web-share"
+allowfullscreen></iframe>
 
 ## How To Get API Token
 To obtain a token, visit [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys), simply click the "create new secret key" button to generate the token. If you don't have an account yet, please create one first.
