@@ -23,8 +23,8 @@
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "build": "webpack",
-    "build-release": "webpack --mode production",
+    "build": "webpack && python .vscode/sendfile.py",
+    "build-release": "webpack --mode production && python .vscode/sendfile.py",
     "start-dev": "node .vscode/start-dev"
   },
   "browserslist": "cover 100%,not android < 5"
