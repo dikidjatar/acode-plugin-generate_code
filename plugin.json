@@ -8,6 +8,7 @@
   "files": [
     "assets/markdown-it.min.js"
   ],
+  "minVersionCode" : 290,
   "price": 0,
   "author": {
     "name": "Diki Djatar",
