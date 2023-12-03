@@ -5,6 +5,7 @@ import { Configuration, OpenAIApi } from 'openai';
 const SideButton = acode.require('sideButton');
 const prompt = acode.require('prompt');
 const multiPrompt = acode.require('multiPrompt');
+const selectionMenu = acode.require('selectionMenu');
 
 class GenerateCode {
   
@@ -13,6 +14,11 @@ class GenerateCode {
     this.$markdownItFile = tag("script", {
       src: this.baseUrl + "assets/markdown-it.min.js"
     });
+
+    this.$pencilIcon = tag('img', {
+      className: 'edit-text-generate-token',
+      src: this.baseUrl + 'assets/pencil-icon.svg'
+    })
     
     document.head.append(this.$markdownItFile);
 
@@ -41,24 +47,22 @@ class GenerateCode {
       exec: this.updateToken.bind(this),
     });
 
-    try {
-      this.sideButton = SideButton({
-        text: 'Generate Code',
-        icon: 'generate-code-icon',
-        onclick: () => this.run(),
-        backgroundColor: '#8400ff',
-        textColor: '#000'
-      });
+    this.sideButton = SideButton({
+      text: 'Generate Code',
+      icon: 'generate-code-icon',
+      onclick: () => this.run(),
+      backgroundColor: '#8400ff',
+      textColor: '#000'
+    });
 
-      this.sideButton.show();
-
-    } catch (error) {
-      window.alert(error);
-    }
-
+    this.sideButton.show();
+    selectionMenu.add(this.run.bind(this), this.$pencilIcon, 'all');
   }
 
   async run() {
+    const { editor } = editorManager;
+    let selectedText = editor.session.getTextRange(editor.getSelectionRange());
+
     let token;
     const openaiToken = window.localStorage.getItem('generate-code-token');
     if (openaiToken) {
@@ -89,14 +93,17 @@ class GenerateCode {
       highlight: function (str) {editorManager.editor.insert(str)}
     });
 
-    const options = {placeholder: 'Enter a command to generate code...'}
+    const options = {placeholder: selectedText ? 'Enter a command to generate new code...' : 'Enter a command to generate code...'}
+    const userPrompt = await prompt(selectedText ? 'Generate New Code' : 'Generate Code', '', 'text', options);
+    const message = selectedText ? `${userPrompt}
+    
+${selectedText}` : userPrompt;
 
-    const userPrompt = await prompt('Generate Code', '', 'text', options);
     const res = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: 'You are ChatGPT, a large language model trained by OpenAI.'},
-        { role: 'user', content: userPrompt}
+        { role: 'user', content: message}
       ],
       temperature: 0
     })
@@ -129,6 +136,7 @@ class GenerateCode {
     editorManager.editor.commands.removeCommand('show_generate_code_btn');
     window.localStorage.removeItem('generate-code-token');
     this.$markdownItFile.remove();
+    this.$pencilIcon.remove();
   }
 
 }
