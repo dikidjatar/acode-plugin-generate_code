@@ -56,34 +56,40 @@ class GenerateCode {
     });
 
     this.sideButton.show();
-    selectionMenu.add(this.run.bind(this), this.$pencilIcon, 'all');
+    selectionMenu.add(this.editCode.bind(this), this.$pencilIcon, 'all');
   }
 
-  async run() {
+  async editCode() {
     const { editor } = editorManager;
     let selectedText = editor.session.getTextRange(editor.getSelectionRange());
+    if (!selectedText) return;
 
-    let token;
     const openaiToken = window.localStorage.getItem('generate-code-token');
-    if (openaiToken) {
-      token = openaiToken;
-    } else {
-      let tokenPrompt = await multiPrompt(
-        'Enter your openai api key',
-        [{
-          type: 'text',
-          id: 'aicode-token',
-          required: true,
-          placeholder: 'Enter your openai api key'
-        }],
-        'https://platform.openai.com/api-keys'
-      )
-      token = tokenPrompt['aicode-token'];
-      window.localStorage.setItem('generate-code-token', token);
-    }
+    if (!openaiToken) {
+      window.alert('Token is empty!');
+      return;
+    };
 
-    const openai = new OpenAIApi(new Configuration({ apiKey: token}))
-    let mdIt = window.markdownit({
+    const userProm = await this.userPrompt('Generate New Code', 'Enter a command to generate a new code...');
+    const message = `${userProm}
+
+${selectedText}`;
+    const openai = new OpenAIApi(new Configuration({ apiKey: openaiToken}))
+    const res = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        { role: 'system', content: 'You are ChatGPT, a large language model trained by OpenAI.'},
+        { role: 'user', content: message}
+      ],
+      temperature: 0
+    });
+    
+    const result = res.data.choices[0].message.content;
+    this.mdIt.render(result);
+  }
+
+  get mdIt() {
+    return window.markdownit({
       html: false,
       xhtmlOut: false,
       breaks: false,
@@ -92,24 +98,63 @@ class GenerateCode {
       quotes: '“”‘’',
       highlight: function (str) {editorManager.editor.insert(str)}
     });
+  }
 
-    const options = {placeholder: selectedText ? 'Enter a command to generate new code...' : 'Enter a command to generate code...'}
-    const userPrompt = await prompt(selectedText ? 'Generate New Code' : 'Generate Code', '', 'text', options);
-    const message = selectedText ? `${userPrompt}
-    
-${selectedText}` : userPrompt;
+  /**
+   * 
+   * @param {String} title 
+   * @param {String} placeholder 
+   * @returns 
+   */
+  userPrompt(title, placeholder) {
+    const options = {placeholder: placeholder}
+    return prompt(title, '', 'text', options);
+  }
 
-    const res = await openai.createChatCompletion({
+  /**
+   * 
+   * @param {string} token 
+   * @param {string} message 
+   * @returns 
+   */
+  openai(token, message) {
+    const openai = new OpenAIApi(new Configuration({ apiKey: token}))
+    return openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: 'You are ChatGPT, a large language model trained by OpenAI.'},
         { role: 'user', content: message}
       ],
       temperature: 0
-    })
-    
-    let result = res.data.choices[0].message.content;
-    mdIt.render(result);
+    });
+  }
+
+  async run() {
+    try {
+      let token;
+      const openaiToken = window.localStorage.getItem('generate-code-token');
+      if (openaiToken) {
+        token = openaiToken;
+      } else {
+        let tokenPrompt = await multiPrompt(
+          'Enter your openai api key',
+          [{
+            type: 'text',
+            id: 'aicode-token',
+            required: true,
+            placeholder: 'Enter your openai api key'
+          }],
+          'https://platform.openai.com/api-keys'
+        )
+        token = tokenPrompt['aicode-token'];
+        window.localStorage.setItem('generate-code-token', token);
+      }
+      
+      const message = await this.userPrompt('Generate Code', 'Enter a command to generate a code...');
+      const result = (await this.openai(token, message)).data.choices[0].message.content;
+      this.mdIt.render(result);
+
+    } catch (e) {}
   }
 
   async updateToken() {
