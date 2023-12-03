@@ -2,6 +2,23 @@
 
 **Generate Code** with AI is a powerful code generation plugin for Acode. With the help of AI, this plugin automates the process of writing code snippets, making your coding experience faster and more efficient.
 
+<details>
+    <summary>Updates</summary>
+    <details>
+        <summary>
+            <code><strong>v1.0.1</strong></code>
+        </summary>
+        <ul>
+            <li>
+                Pencil icon is now available in the selection menu, which can be used to regenerate code.
+            </li>
+            <li>
+                Added code selection (Now you can regenerate selected code through commands).
+            </li>
+        </ul>
+    </details>
+</details>
+
 ## Features
 - **AI-Powered Code Generation**: Leverage the capabilities of AI to instantly generate code based on your commands.
 - **Seamless Integration**: Effortlessly integrate the plugin into your preferred code editor, enhancing your workflow without any hassle.
