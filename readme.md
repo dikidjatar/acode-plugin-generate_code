@@ -35,5 +35,10 @@ To update your token, search for `"Generate Code Update Token"`.
 ## How To Get API Token
 To obtain a token, visit [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys), simply click the "create new secret key" button to generate the token. If you don't have an account yet, please create one first.
 
+# Video
+<center>
+    <img src="https://github.com/dikidjatar/acode-plugin-generate_code/blob/main/dist/assets/vid.gif?raw=1" width="90%">
+</center>
+
 # Support
 For any issues, bug reports, or feature requests, please [submit an issue](https://gothub.com/dikidjatar/acode-plugin-generate_token).
