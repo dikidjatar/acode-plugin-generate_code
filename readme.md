@@ -6,14 +6,25 @@
     <summary>Updates</summary>
     <details>
         <summary>
+            <code><strong>v1.0.2</strong></code>
+        </summary>
+        <ul>
+            <li>
+                <strong>Automatic language recognition: </strong>
+                The plugin now automatically recognizes the currently used language.
+            </li>
+        </ul>
+    </details>
+    <details>
+        <summary>
             <code><strong>v1.0.1</strong></code>
         </summary>
         <ul>
             <li>
-                Pencil icon is now available in the selection menu, which can be used to regenerate code.
+                <strong>Pencil icon</strong> is now available in the selection menu, which can be used to regenerate code.
             </li>
             <li>
-                Added code selection (Now you can regenerate selected code through commands).
+                <strong>Added code selection</strong> (Now you can regenerate selected code through commands).
             </li>
         </ul>
     </details>
@@ -41,4 +52,4 @@ To obtain a token, visit [https://platform.openai.com/api-keys](https://platform
 </center>
 
 # Support
-For any issues, bug reports, or feature requests, please [submit an issue](https://gothub.com/dikidjatar/acode-plugin-generate_token).
+For any issues, bug reports, or feature requests, please [submit an issue](https://github.com/dikidjatar/acode-plugin-generate_code).

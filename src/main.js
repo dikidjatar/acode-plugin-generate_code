@@ -117,12 +117,16 @@ ${selectedText}`;
    * @param {string} message 
    * @returns 
    */
-  openai(token, message) {
+  _openai(token, message) {
     const openai = new OpenAIApi(new Configuration({ apiKey: token}))
+
+    const programmingLanguae = this.getCurrentModeName;
+
     return openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: 'You are ChatGPT, a large language model trained by OpenAI.'},
+        { role: 'user', content: `Language: ${programmingLanguae}`},
         { role: 'user', content: message}
       ],
       temperature: 0
@@ -151,7 +155,7 @@ ${selectedText}`;
       }
       
       const message = await this.userPrompt('Generate Code', 'Enter a command to generate a code...');
-      const result = (await this.openai(token, message)).data.choices[0].message.content;
+      const result = (await this._openai(token, message)).data.choices[0].message.content;
       this.mdIt.render(result);
 
     } catch (e) {}
@@ -172,6 +176,14 @@ ${selectedText}`;
     window.localStorage.removeItem('generate-code-token');
     window.localStorage.setItem('generate-code-token', newToken['aicode-token']);
     window.toast('Api Key Update!', 3000);
+  }
+
+  get getCurrentModeName() {
+    const { editor } = editorManager;
+    const session = editor.getSession();
+    const currentMode = session.getMode();
+    const currentModeName = currentMode.$id.split('/'); // [ace, mode, javascript]
+    return currentModeName[currentModeName.length - 1];
   }
 
   async destroy() {
