@@ -1,13 +1,16 @@
 {
   "name": "acode-plugin",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Template for Acode plugin",
   "main": "dist/main.js",
   "repository": "https://github.com/deadlyjack/acode-plugin.git",
   "author": "Ajit <me@ajitkumar.dev>",
   "license": "MIT",
   "dependencies": {
-    "html-tag-js": "^1.1.41"
+    "@google/generative-ai": "^0.21.0",
+    "@types/ace": "^0.0.52",
+    "html-tag-js": "^1.1.41",
+    "openai": "^4.77.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
@@ -18,7 +21,6 @@
     "jszip": "^3.10.1",
     "live-server": "^1.2.2",
     "markdown-it": "^13.0.2",
-    "openai": "3.2.1",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
