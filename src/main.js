@@ -209,8 +209,8 @@ class GenerateCode {
          let provider = this.settings.provider;
          if (!provider) {
             const options = [
-               ["openai", 'Openai', '', true],
-               ["gemini", 'Gemini', '', true],
+               ["openai", 'Openai'],
+               ["gemini", 'Gemini'],
             ];
             const selectedProvider = await Select("Select Provider", options, {
                onCancel: () => { },
